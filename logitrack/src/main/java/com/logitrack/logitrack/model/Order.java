@@ -1,9 +1,12 @@
 package com.logitrack.logitrack.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDate;
 import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "orders")
@@ -26,5 +29,6 @@ public class Order {
     private Client client;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderLine> orderLines;
+    @JsonManagedReference
+    private List<OrderLine> orderLines = new ArrayList<>();
 }

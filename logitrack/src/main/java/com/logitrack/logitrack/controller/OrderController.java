@@ -21,14 +21,6 @@ public class OrderController {
         return ResponseEntity.ok(orderService.createOrder(clientId));
     }
 
-    @PostMapping("/{orderId}/products")
-    public ResponseEntity<Order> addProductToOrder(
-            @PathVariable Long orderId,
-            @RequestParam Long productId,
-            @RequestParam Integer quantity) {
-        return ResponseEntity.ok(orderService.addProductToOrder(orderId, productId, quantity));
-    }
-
     @GetMapping
     public ResponseEntity<List<Order>> getAllOrders() {
         return ResponseEntity.ok(orderService.getAllOrders());
@@ -55,4 +47,5 @@ public class OrderController {
     public ResponseEntity<Long> countOrders() {
         return ResponseEntity.ok(orderService.countAllOrders());
     }
+
 }
