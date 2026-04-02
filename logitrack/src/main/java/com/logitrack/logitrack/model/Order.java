@@ -1,6 +1,5 @@
 package com.logitrack.logitrack.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,6 +28,5 @@ public class Order {
     private Client client;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    @JsonManagedReference
     private List<OrderLine> orderLines = new ArrayList<>();
 }

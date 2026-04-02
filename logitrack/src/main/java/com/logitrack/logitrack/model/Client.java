@@ -3,6 +3,8 @@ package com.logitrack.logitrack.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "clients")
 @Data
@@ -18,4 +20,7 @@ public class Client {
     private String email;
     private String phone;
     private String city;
+
+    @OneToMany(mappedBy = "client",cascade = CascadeType.ALL)
+    private List<Order> orders;
 }
