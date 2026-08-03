@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
     Product toEntity(ProductRequest request);
-    ProductRequest toRequest(Product product);
+    ProductResponse toResponse(Product product);
     List<ProductResponse> toResponseList(List<Product> products);
     void updateClientFromRequest(ProductRequest request, @MappingTarget Product product);
 }

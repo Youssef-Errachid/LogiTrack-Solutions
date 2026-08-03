@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface OrderMapper {
     Order toEntity(OrderRequest request);
-    OrderRequest toRequest(Order order);
+    OrderResponse toResponse(Order order);
     List<OrderResponse> toResponseList(List<Order> orders);
     void updateClientFromRequest(OrderRequest request, @MappingTarget Order order);
 }

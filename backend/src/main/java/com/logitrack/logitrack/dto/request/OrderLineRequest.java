@@ -1,4 +1,4 @@
-package src.main.java.com.logitrack.logitrack.dto.request;
+package com.logitrack.logitrack.dto.request;
 
 
 import lombok.*;

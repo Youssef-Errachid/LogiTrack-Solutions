@@ -13,7 +13,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface OrderLineMapper {
     OrderLine toEntity(OrderLineRequest request);
-    OrderLineRequest toRequest(OrderLine orderLine);
+    OrderLineResponse toResponse(OrderLine orderLine);
     List<OrderLineResponse> toResponseList(List<OrderLine> orderLines);
 
     void updateClientFromRequest(OrderLineRequest request, @MappingTarget OrderLine orderLine);

@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ClientMapper {
     Client toEntity(ClientRequest request);
-    ClientRequest toRequest(Client client);
+    ClientResponse toReponse(Client client);
     List<ClientResponse> toResponseList(List<Client> clients);
     void updateClientFromRequest(ClientRequest request, @MappingTarget Client client);
 }

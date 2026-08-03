@@ -1,7 +1,5 @@
-package src.main.java.com.logitrack.logitrack.dto.response;
+package com.logitrack.logitrack.dto.response;
 
-
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.*;
 
 @AllArgsConstructor
