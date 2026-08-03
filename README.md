@@ -16,16 +16,18 @@ Logitrack/
  ## Getting Started 
 
  ## Backend 
----- using commands 
+ 
+```bach
 cd backend 
-./mvnw spring-boot:run 
+./mvnw spring-boot:run
+```
 
-
-##Frontend 
----- using commands 
+## Frontend 
+```bach
 cd frontend
 npm install 
-npm run dev 
+npm run dev
+```
 
 ## Author 
 
