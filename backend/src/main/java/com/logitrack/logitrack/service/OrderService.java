@@ -64,4 +64,11 @@ public class OrderService {
     public Long countAllOrders() {
         return orderRepository.countAllOrders();
     }
+
+    public List<OrderLine> getAllOrderLinesWithId(Long id){
+        return orderLineRepository.findAllOrderLinesOfProduct(id);
+    }
+
+
+
 }
