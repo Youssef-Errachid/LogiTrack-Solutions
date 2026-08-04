@@ -1,5 +1,5 @@
 # LogiTrack Solutions
-A full-stack logistics management application built with Spring Boot and React.
+A full-stack application logistics management application built with Spring Boot and React.js 
 
 ## Technologies
 -Backend: Spring Boot 
@@ -32,4 +32,8 @@ npm run dev
 ## Author 
 
 Youssef Errachid
+
+## Website
+
+https://yousseferrachid.dev
 
