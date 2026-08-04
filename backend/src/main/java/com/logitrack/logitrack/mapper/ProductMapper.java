@@ -13,5 +13,5 @@ public interface ProductMapper {
     Product toEntity(ProductRequest request);
     ProductResponse toResponse(Product product);
     List<ProductResponse> toResponseList(List<Product> products);
-    void updateClientFromRequest(ProductRequest request, @MappingTarget Product product);
+    void updateProductFromRequest(ProductRequest request, @MappingTarget Product product);
 }

@@ -13,5 +13,5 @@ public interface OrderMapper {
     Order toEntity(OrderRequest request);
     OrderResponse toResponse(Order order);
     List<OrderResponse> toResponseList(List<Order> orders);
-    void updateClientFromRequest(OrderRequest request, @MappingTarget Order order);
+    void updateOrderFromRequest(OrderRequest request, @MappingTarget Order order);
 }

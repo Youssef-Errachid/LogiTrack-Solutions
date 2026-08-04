@@ -16,5 +16,5 @@ public interface OrderLineMapper {
     OrderLineResponse toResponse(OrderLine orderLine);
     List<OrderLineResponse> toResponseList(List<OrderLine> orderLines);
 
-    void updateClientFromRequest(OrderLineRequest request, @MappingTarget OrderLine orderLine);
+    void updateOrderLineFromRequest(OrderLineRequest request, @MappingTarget OrderLine orderLine);
 }
