@@ -6,6 +6,7 @@ import com.logitrack.logitrack.mapper.OrderMapper;
 import com.logitrack.logitrack.model.*;
 import com.logitrack.logitrack.service.OrderService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -21,25 +22,29 @@ public class OrderController {
         this.orderMapper = orderMapper;
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PostMapping
-    public ResponseEntity<OrderResponse> createOrder(@RequestParam OrderRequest request) {
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest request) {
         Order order = orderMapper.toEntity(request);
         Order savedOrder = orderService.createOrder(order.getClient().getId());
         return ResponseEntity.ok(orderMapper.toResponse(savedOrder));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")
     @GetMapping
     public ResponseEntity<List<OrderResponse>> getAllOrders() {
         List<Order> orders = orderService.getAllOrders();
         return ResponseEntity.ok(orderMapper.toResponseList(orders));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long id) {
         Order order = orderService.getOrderById(id);
         return ResponseEntity.ok(orderMapper.toResponse(order));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")
     @PutMapping("/{id}/status")
     public ResponseEntity<OrderResponse> updateStatus(
             @PathVariable Long id,
@@ -48,12 +53,14 @@ public class OrderController {
         return ResponseEntity.ok(orderMapper.toResponse(updateOrder));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")
     @GetMapping("/client/{clientId}")
     public ResponseEntity<List<OrderResponse>> getOrdersByClient(@PathVariable Long clientId) {
         List<Order> orders = orderService.getOrdersByClient(clientId);
         return ResponseEntity.ok(orderMapper.toResponseList(orders));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @GetMapping("/count")
     public ResponseEntity<Long> countOrders() {
         return ResponseEntity.ok(orderService.countAllOrders());
