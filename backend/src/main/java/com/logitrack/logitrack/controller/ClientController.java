@@ -5,6 +5,7 @@ import com.logitrack.logitrack.dto.response.ClientResponse;
 import com.logitrack.logitrack.mapper.ClientMapper;
 import com.logitrack.logitrack.model.Client;
 import com.logitrack.logitrack.service.ClientService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,7 +30,7 @@ public class ClientController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PostMapping
-    public ResponseEntity<ClientResponse> addClient(@RequestBody ClientRequest request) {
+    public ResponseEntity<ClientResponse> addClient(@Valid @RequestBody ClientRequest request) {
         Client client = clientMapper.toEntity(request);
         Client savedClient = clientService.saveClient(client);
         return ResponseEntity.ok(clientMapper.toReponse(savedClient));
@@ -69,7 +70,7 @@ public class ClientController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PutMapping("/{id}")
-    public  ResponseEntity<ClientResponse> updateClient(@PathVariable Long id,@RequestBody ClientRequest request){
+    public  ResponseEntity<ClientResponse> updateClient(@Valid @PathVariable Long id,@RequestBody ClientRequest request){
         Client updatedClient = clientService.updateClient(id,request);
         return ResponseEntity.ok(clientMapper.toReponse(updatedClient));
     }

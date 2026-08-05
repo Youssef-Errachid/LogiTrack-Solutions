@@ -1,5 +1,6 @@
 package com.logitrack.logitrack.dto.request;
 import com.logitrack.logitrack.model.OrderStatus;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -10,7 +11,6 @@ import java.time.LocalDate;
 @Setter
 @Getter
 public class OrderRequest{
-    private LocalDate orderDate;
-    private OrderStatus status;
+@NotBlank(message = "Client id is required")
     private  Long clientId;
 }

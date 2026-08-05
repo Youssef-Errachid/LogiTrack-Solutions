@@ -5,6 +5,7 @@ import com.logitrack.logitrack.dto.response.OrderResponse;
 import com.logitrack.logitrack.mapper.OrderMapper;
 import com.logitrack.logitrack.model.*;
 import com.logitrack.logitrack.service.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,7 +28,7 @@ public class OrderController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PostMapping
-    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest request) {
+    public ResponseEntity<OrderResponse> createOrder(@Valid @RequestBody OrderRequest request) {
         Order order = orderMapper.toEntity(request);
         Order savedOrder = orderService.createOrder(order.getClient().getId());
         return ResponseEntity.ok(orderMapper.toResponse(savedOrder));
@@ -50,6 +51,7 @@ public class OrderController {
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")
     @PutMapping("/{id}/status")
     public ResponseEntity<OrderResponse> updateStatus(
+            @Valid
             @PathVariable Long id,
             @RequestParam OrderStatus status) {
         Order updateOrder = orderService.updateOrderStatus(id,status);

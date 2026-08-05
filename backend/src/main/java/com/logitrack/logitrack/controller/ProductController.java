@@ -5,6 +5,7 @@ import com.logitrack.logitrack.dto.response.ProductResponse;
 import com.logitrack.logitrack.mapper.ProductMapper;
 import com.logitrack.logitrack.model.Product;
 import com.logitrack.logitrack.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class ProductController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PostMapping
-    public ResponseEntity<ProductResponse> addProduct(@RequestBody ProductRequest request) {
+    public ResponseEntity<ProductResponse> addProduct(@Valid @RequestBody ProductRequest request) {
         Product product  = productMapper.toEntity(request);
         Product savedProduct = productService.saveProduct(product);
         return ResponseEntity.ok(productMapper.toResponse(savedProduct));
@@ -78,7 +79,7 @@ public class ProductController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id , @RequestBody ProductRequest request){
+    public ResponseEntity<ProductResponse> updateProduct(@Valid  @PathVariable Long id , @RequestBody ProductRequest request){
         Product updatedProduct = productService.updateProduct(id ,request);
         return ResponseEntity.ok(productMapper.toResponse(updatedProduct));
     }
