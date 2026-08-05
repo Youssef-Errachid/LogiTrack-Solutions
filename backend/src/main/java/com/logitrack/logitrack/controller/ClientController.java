@@ -6,6 +6,10 @@ import com.logitrack.logitrack.mapper.ClientMapper;
 import com.logitrack.logitrack.model.Client;
 import com.logitrack.logitrack.service.ClientService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +37,20 @@ public class ClientController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")
     @GetMapping
-    public ResponseEntity<List<ClientResponse>> getAllClients() {
-        List<Client> clients = clientService.getAllClients();
-        return ResponseEntity.ok(clientMapper.toResponseList(clients));
+    public ResponseEntity<Page<ClientResponse>> getAllClients(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10")int size,
+            @RequestParam(defaultValue = "name")String sortby,
+            @RequestParam(defaultValue = "asc")String direction
+
+    ) {
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ?Sort.by(sortby).descending()
+                :Sort.by(sortby).ascending();
+        Pageable pageable = PageRequest.of(page,size,sort);
+        Page<ClientResponse> clients = clientService.getAllClients(pageable)
+                .map(clientMapper::toReponse);
+        return ResponseEntity.ok(clients);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")

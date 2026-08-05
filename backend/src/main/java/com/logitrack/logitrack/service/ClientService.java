@@ -4,6 +4,8 @@ import com.logitrack.logitrack.dto.request.ClientRequest;
 import com.logitrack.logitrack.mapper.ClientMapper;
 import com.logitrack.logitrack.model.Client;
 import com.logitrack.logitrack.repository.ClientRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -22,8 +24,8 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
-    public List<Client> getAllClients() {
-        return clientRepository.findAll();
+    public Page<Client> getAllClients(Pageable pageable) {
+        return clientRepository.findAll(pageable);
     }
 
     public Client getClientById(Long id) {

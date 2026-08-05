@@ -5,6 +5,8 @@ import com.logitrack.logitrack.dto.response.ProductResponse;
 import com.logitrack.logitrack.mapper.ProductMapper;
 import com.logitrack.logitrack.model.Product;
 import com.logitrack.logitrack.service.ProductService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +35,11 @@ public class ProductController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")
     @GetMapping
-    public ResponseEntity<List<ProductResponse>> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
-        return ResponseEntity.ok(productMapper.toResponseList(products));
+    public ResponseEntity<Page<ProductResponse>> getAllProducts(Pageable pageable) {
+       Page<ProductResponse> products = productService
+               .getAllProducts(pageable)
+               .map(productMapper::toResponse);
+        return ResponseEntity.ok((products));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")

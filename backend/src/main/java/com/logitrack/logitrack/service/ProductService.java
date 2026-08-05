@@ -4,6 +4,8 @@ import com.logitrack.logitrack.dto.request.ProductRequest;
 import com.logitrack.logitrack.mapper.ProductMapper;
 import com.logitrack.logitrack.model.Product;
 import com.logitrack.logitrack.repository.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -22,8 +24,8 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public Page<Product> getAllProducts(Pageable pageable) {
+        return productRepository.findAll(pageable);
     }
 
     public Product getProductById(Long id) {

@@ -5,6 +5,9 @@ import com.logitrack.logitrack.dto.response.OrderResponse;
 import com.logitrack.logitrack.mapper.OrderMapper;
 import com.logitrack.logitrack.model.*;
 import com.logitrack.logitrack.service.OrderService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +35,9 @@ public class OrderController {
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")
     @GetMapping
-    public ResponseEntity<List<OrderResponse>> getAllOrders() {
-        List<Order> orders = orderService.getAllOrders();
-        return ResponseEntity.ok(orderMapper.toResponseList(orders));
+    public ResponseEntity<Page<OrderResponse>> getAllOrders(@PageableDefault(size = 10,sort = "orderDate")Pageable pageable) {
+        Page<OrderResponse> orders = orderService.getAllOrders(pageable).map(orderMapper::toResponse);
+        return ResponseEntity.ok((orders));
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")

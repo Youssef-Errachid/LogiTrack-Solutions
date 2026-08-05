@@ -2,6 +2,8 @@ package com.logitrack.logitrack.service;
 
 import com.logitrack.logitrack.model.*;
 import com.logitrack.logitrack.repository.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -38,8 +40,8 @@ public class OrderService {
     }
 
 
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public Page<Order> getAllOrders(Pageable pageable) {
+        return orderRepository.findAll(pageable);
     }
 
 
