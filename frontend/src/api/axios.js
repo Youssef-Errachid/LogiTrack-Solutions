@@ -44,7 +44,7 @@ api.interceptors.response.use(
         if (status === 500) {
             console.error("Internal Server Error");
         }
-        return Promise.reject()
+        return Promise.reject(error)
     },
 );
 export default api;
