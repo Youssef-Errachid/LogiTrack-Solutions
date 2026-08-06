@@ -8,22 +8,23 @@ import {Link} from "react-router-dom";
 
 
 export default function Login() {
+    const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
     const handleLoginSubmit = async () => {
-        console.log("Button clicked")
         try {
-            console.log(email, password);
+            setLoading(true);
             const data = await login({email, password});
-            console.log(data);
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", JSON.stringify(data));
 
             navigate("/dashboard");
         }catch(err){
             console.error(err);
+        }finally {
+            setLoading(false);
         }
     };
     return (
@@ -64,7 +65,7 @@ export default function Login() {
                                    "&:hover": {
                                        backgroundColor: "#001fb3"
                                    }
-                               }}>Login</Button>
+                               }}>{loading? "Logging in..." : "Login"}</Button>
                    </Box>
 
                     <Typography>
@@ -72,7 +73,7 @@ export default function Login() {
                             Forgot Password?
                         </Link>
                     </Typography>
-                    <Typography>Don't have an account?
+                    <Typography>Don't have an account?{" "}
                         <Link to={"/register"} >
                             Sign Up Here.
                         </Link>
