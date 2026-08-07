@@ -1,5 +1,5 @@
 import {NavLink} from 'react-router-dom';
-import "../styles/Sidebar.css";
+import "../../styles/Sidebar.css";
 import {LayoutDashboard,Users,Package,ShoppingBasket,Info,User,Settings}from 'lucide-react';
 
 const menuItems = [

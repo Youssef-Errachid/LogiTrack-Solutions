@@ -2,8 +2,8 @@ import {Bell,Sun,Moon,LogOut } from "lucide-react";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {useEffect} from "react";
-import logo from "../assets/Logo.png"
-import "../styles/Navbar.css";
+import logo from "../../assets/Logo.png"
+import "../../styles/Navbar.css";
 
 export default function Navbar() {
     const navigate = useNavigate();
