@@ -12,3 +12,11 @@ body.dark-mode{
     color:white;
 }
 
+body.dark-mode .theme-button {
+    color: white;
+}
+
+body.dark-mode .theme-button:hover {
+    background-color: #333;
+}
+

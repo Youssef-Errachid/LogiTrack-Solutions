@@ -5,32 +5,32 @@ import {LayoutDashboard,Users,Package,ShoppingBasket,Info,User,Settings}from 'lu
 const menuItems = [
     {
         path:"/dashboard",
-        icon:<LayoutDashboard size={20} />,
+        icon:<LayoutDashboard size={25} />,
         label:"Dashboard"
     },
     {
         path:"/clients",
-        icon:<Users size={20} />,
+        icon:<Users size={25} />,
         label:"Clients"
     },
     {
         path:"/products",
-        icon:<ShoppingBasket size={20} />,
+        icon:<ShoppingBasket size={25} />,
         label:"Products"
     },
     {
         path:"/orders",
-        icon:<Package size={20} />,
+        icon:<Package size={25} />,
         label:"Orders"
     },
     {
         path:"/about",
-        icon:<Info  size={20}/>,
+        icon:<Info  size={25}/>,
         label:"About"
     },
     {
         path:"/settings",
-        icon:<Settings  size={20}/>,
+        icon:<Settings  size={25}/>,
         label:"Settings"
     },
 ];
@@ -51,8 +51,8 @@ export default function Sidebar() {
             </div>
 
             <div className="user-panel">
-                <div>
-                    <User size={18} color="white" />
+                <div className="user-icon">
+                    <User size={32} />
                 </div>
                 <div>
                     <p className="user-name">Youssef errachid</p>

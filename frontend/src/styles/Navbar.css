@@ -1,9 +1,98 @@
 .navbar {
-    background-color:white;
-    color:black;
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 70px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 25px;
+
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    box-sizing: border-box;
 }
 
 body.dark-mode .navbar {
     background-color:#1e1e1e;
     color:white;
+}
+
+.logo{
+    display:flex;
+    align-items: center;
+}
+
+.logo-img{
+    height:200px;
+    width:300px;
+}
+
+.actions{
+    display:flex;
+    justify-content: end;
+    gap:15px;
+}
+
+.actions button{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    outline:none;
+    background:transparent;
+    transition: .3s ease;
+}
+
+.notification{
+    position:relative;
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    color:#333;
+}
+.notification:hover{
+    background-color:#f3f3f6;
+}
+
+.notification-counter{
+    position:absolute;
+    top:5px;
+    right:4px;
+
+    width:18px;
+    height:18px;
+
+    font-size: 11px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.them-button{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    color:#333;
+}
+
+.btn-logout{
+    display:flex;
+    align-items: center;
+    gap:5px;
+    padding:10px 20px;
+    border-radius:10px;
+
+    background-color: #4054cc !important;
+
+    font-size: 16px;
+    font-weight: bold;
+}
+.btn-logout:hover{
+    background-color: #f86363 !important;
 }
