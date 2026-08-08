@@ -82,6 +82,7 @@ public class OrderController {
         );
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")
     @GetMapping("/count/pending")
     public ResponseEntity<Long> countPendingOrders() {
         return ResponseEntity.ok(
@@ -89,6 +90,7 @@ public class OrderController {
         );
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")
     @GetMapping("/count/shipped")
     public ResponseEntity<Long> countShippedOrders() {
         return ResponseEntity.ok(
@@ -96,6 +98,7 @@ public class OrderController {
         );
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")
     @GetMapping("/count/delivered")
     public ResponseEntity<Long> countDeliveredOrders() {
         return ResponseEntity.ok(
