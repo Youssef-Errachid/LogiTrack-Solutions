@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import {
   Box,
   Typography,
@@ -15,11 +16,21 @@ import {
   CardContent,
   CircularProgress,
   TablePagination,
+  IconButton,
+  Tooltip,
 } from "@mui/material";
-import { Search, Plus } from "lucide-react";
+import { Search, Plus, Eye, Pencil, Trash2 } from "lucide-react";
 
-import { getClients, searchClients, createClient } from "../api/clientService";
-import AddClientDialog from "../components/clients/AddClientDialog";
+import {
+  getClients,
+  searchClients,
+  createClient,
+  updateClient,
+  deleteClient,
+} from "../api/clientService";
+import ClientFormDialog from "../components/clients/ClientFormDialog";
+import ClientDetailsDialog from "../components/clients/ClientDetailsDialog";
+import DeleteConfirmDialog from "../components/clients/DeleteConfirmDialog";
 
 export default function Clients() {
   const [clients, setClients] = useState([]);
@@ -28,7 +39,15 @@ export default function Clients() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const [formOpen, setFormOpen] = useState(false);
+  const [editingClient, setEditingClient] = useState(null);
+
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [selectedClient, setSelectedClient] = useState(null);
+
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [clientToDelete, setClientToDelete] = useState(null);
 
   const fetchClients = async () => {
     setLoading(true);
@@ -57,9 +76,45 @@ export default function Clients() {
     setPage(0);
   };
 
-  const handleClientAdded = async (formData) => {
-    await createClient(formData);
+  const handleAddClick = () => {
+    setEditingClient(null);
+    setFormOpen(true);
+  };
+
+  const handleEditClick = (client) => {
+    setEditingClient(client);
+    setFormOpen(true);
+  };
+
+  const handleViewClick = (client) => {
+    setSelectedClient(client);
+    setDetailsOpen(true);
+  };
+
+  const handleDeleteClick = (client) => {
+    setClientToDelete(client);
+    setDeleteOpen(true);
+  };
+
+  const handleFormSubmit = async (formData) => {
+    if (editingClient) {
+      await updateClient(editingClient.id, formData);
+    } else {
+      await createClient(formData);
+    }
     fetchClients();
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      await deleteClient(clientToDelete.id);
+      setDeleteOpen(false);
+      setClientToDelete(null);
+      fetchClients();
+      toast.success(`${clientToDelete.name} deleted successfully`);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -69,18 +124,20 @@ export default function Clients() {
         flexDirection={{ xs: "column", md: "row" }}
         justifyContent="space-between"
         alignItems={{ xs: "stretch", md: "center" }}
-        gap={2}
-        sx={{ mb: "80px" }}
+        gap={10}
+        sx={{ mb: "30px" }}
       >
         <Typography variant="h5" fontWeight="bold">
           Clients
         </Typography>
 
         <Box
-          display="flex"
-          flexDirection={{ xs: "column", sm: "row" }}
-          gap={4}
-          alignItems="center"
+          sx={{
+            display: "flex",
+            alignItems: { xs: "stretch", sm: "center" },
+            flexDirection: { xs: "column", sm: "row" },
+            width: { xs: "100%", md: "auto" },
+          }}
         >
           <TextField
             placeholder="Search by name"
@@ -106,8 +163,11 @@ export default function Clients() {
           <Button
             variant="contained"
             startIcon={<Plus size={18} />}
-            onClick={() => setDialogOpen(true)}
+            onClick={handleAddClick}
             sx={{
+              ml: { xs: 0, sm: "350px" },
+              mt: { xs: "16px", sm: 0 },
+
               borderRadius: 2,
               textTransform: "none",
               fontWeight: 600,
@@ -115,7 +175,10 @@ export default function Clients() {
               py: 1,
               boxShadow: "none",
               whiteSpace: "nowrap",
-              "&:hover": { boxShadow: 2 },
+
+              "&:hover": {
+                boxShadow: 2,
+              },
             }}
           >
             Add Client
@@ -147,12 +210,13 @@ export default function Clients() {
                       <TableCell>Email</TableCell>
                       <TableCell>Phone</TableCell>
                       <TableCell>City</TableCell>
+                      <TableCell align="right">Actions</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {clients.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={5} align="center" sx={{ py: 6 }}>
+                        <TableCell colSpan={6} align="center" sx={{ py: 6 }}>
                           <Typography variant="body1" color="text.secondary">
                             No clients found
                           </Typography>
@@ -175,6 +239,33 @@ export default function Clients() {
                           <TableCell>{client.email}</TableCell>
                           <TableCell>{client.phone}</TableCell>
                           <TableCell>{client.city}</TableCell>
+                          <TableCell align="right">
+                            <Tooltip title="View details">
+                              <IconButton
+                                size="small"
+                                onClick={() => handleViewClick(client)}
+                              >
+                                <Eye size={18} />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Edit">
+                              <IconButton
+                                size="small"
+                                onClick={() => handleEditClick(client)}
+                              >
+                                <Pencil size={18} />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Delete">
+                              <IconButton
+                                size="small"
+                                color="error"
+                                onClick={() => handleDeleteClick(client)}
+                              >
+                                <Trash2 size={18} />
+                              </IconButton>
+                            </Tooltip>
+                          </TableCell>
                         </TableRow>
                       ))
                     )}
@@ -199,10 +290,24 @@ export default function Clients() {
         </CardContent>
       </Card>
 
-      <AddClientDialog
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        onClientAdded={handleClientAdded}
+      <ClientFormDialog
+        open={formOpen}
+        onClose={() => setFormOpen(false)}
+        onSubmit={handleFormSubmit}
+        client={editingClient}
+      />
+
+      <ClientDetailsDialog
+        open={detailsOpen}
+        onClose={() => setDetailsOpen(false)}
+        client={selectedClient}
+      />
+
+      <DeleteConfirmDialog
+        open={deleteOpen}
+        onClose={() => setDeleteOpen(false)}
+        onConfirm={handleConfirmDelete}
+        clientName={clientToDelete?.name}
       />
     </Box>
   );
