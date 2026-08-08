@@ -71,6 +71,11 @@ public class OrderService {
         return orderLineRepository.findAllOrderLinesOfProduct(id);
     }
 
+    public List<Order> getRecentOrders() {
+        return orderRepository.findTop5ByOrderByOrderDateDesc();
+    }
 
-
+    public long countOrdersByStatus(OrderStatus status) {
+        return orderRepository.countByStatus(status);
+    }
 }

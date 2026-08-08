@@ -16,4 +16,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("SELECT COUNT(o) FROM Order o")
     Long countAllOrders();
 
+    List<Order> findTop5ByOrderByOrderDateDesc();
+    long countByStatus(OrderStatus status);
 }

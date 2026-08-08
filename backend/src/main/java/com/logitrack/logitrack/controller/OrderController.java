@@ -71,4 +71,35 @@ public class OrderController {
         return ResponseEntity.ok(orderService.countAllOrders());
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")
+    @GetMapping("/recent")
+    public ResponseEntity<List<OrderResponse>> getRecentOrders() {
+        return ResponseEntity.ok(
+                orderService.getRecentOrders()
+                        .stream()
+                        .map(orderMapper::toResponse)
+                        .toList()
+        );
+    }
+
+    @GetMapping("/count/pending")
+    public ResponseEntity<Long> countPendingOrders() {
+        return ResponseEntity.ok(
+                orderService.countOrdersByStatus(OrderStatus.PENDING)
+        );
+    }
+
+    @GetMapping("/count/shipped")
+    public ResponseEntity<Long> countShippedOrders() {
+        return ResponseEntity.ok(
+                orderService.countOrdersByStatus(OrderStatus.SHIPPED)
+        );
+    }
+
+    @GetMapping("/count/delivered")
+    public ResponseEntity<Long> countDeliveredOrders() {
+        return ResponseEntity.ok(
+                orderService.countOrdersByStatus(OrderStatus.DELIVERED)
+        );
+    }
 }
