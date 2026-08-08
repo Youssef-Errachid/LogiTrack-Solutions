@@ -46,4 +46,8 @@ public class ClientService {
     public Long getClientCount() {
         return clientRepository.count();
     }
+
+    public Page<Client> searchClients(String keyword, Pageable pageable) {
+        return clientRepository.searchClients(keyword, pageable);
+    }
 }

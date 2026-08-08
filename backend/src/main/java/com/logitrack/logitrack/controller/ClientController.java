@@ -79,4 +79,22 @@ public class ClientController {
     public ResponseEntity<Long> getClientCount() {
         return ResponseEntity.ok(clientService.getClientCount());
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")
+    @GetMapping("/search")
+    public ResponseEntity<Page<ClientResponse>> searchClients(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "name") String sortby,
+            @RequestParam(defaultValue = "asc") String direction
+    ) {
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortby).descending()
+                : Sort.by(sortby).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<ClientResponse> clients = clientService.searchClients(keyword, pageable)
+                .map(clientMapper::toReponse);
+        return ResponseEntity.ok(clients);
+    }
 }
