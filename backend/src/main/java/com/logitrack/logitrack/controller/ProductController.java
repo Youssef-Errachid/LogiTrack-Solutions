@@ -89,4 +89,14 @@ public class ProductController {
     public ResponseEntity<Long> getProductCount() {
         return ResponseEntity.ok(productService.getProductCount());
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")
+    @GetMapping("/top")
+    public ResponseEntity<ProductResponse> getTopProduct() {
+        Product product = productService.getTopSellingProduct();
+        if (product == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(productMapper.toResponse(product));
+    }
 }

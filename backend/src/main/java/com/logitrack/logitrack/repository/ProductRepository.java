@@ -1,6 +1,7 @@
 package com.logitrack.logitrack.repository;
 
 import com.logitrack.logitrack.model.Product;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -16,5 +17,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE p.quantityInStock < 10")
     List<Product> findLowStockProducts();
+
+    @Query("""
+        SELECT ol.product FROM OrderLine ol
+        GROUP BY ol.product
+        ORDER BY SUM(ol.quantity) DESC
+        """)
+    List<Product> findTopSellingProducts(Pageable pageable);
 
 }

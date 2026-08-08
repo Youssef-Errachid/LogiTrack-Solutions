@@ -5,6 +5,7 @@ import com.logitrack.logitrack.mapper.ProductMapper;
 import com.logitrack.logitrack.model.Product;
 import com.logitrack.logitrack.repository.ProductRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -58,5 +59,10 @@ public class ProductService {
 
     public Long getProductCount() {
         return productRepository.count();
+    }
+
+    public Product getTopSellingProduct() {
+        List<Product> results = productRepository.findTopSellingProducts(PageRequest.of(0, 1));
+        return results.isEmpty() ? null : results.get(0);
     }
 }

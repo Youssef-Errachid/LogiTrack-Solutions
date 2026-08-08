@@ -27,6 +27,19 @@ public class OrderService {
         this.orderLineRepository = orderLineRepository;
     }
 
+    public OrderLine addOrderLine(Long orderId, Long productId, Integer quantity) {
+        Order order = getOrderById(orderId);
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
+
+        OrderLine orderLine = new OrderLine();
+        orderLine.setOrder(order);
+        orderLine.setProduct(product);
+        orderLine.setQuantity(quantity);
+
+        return orderLineRepository.save(orderLine);
+    }
+
     public Order createOrder(Long clientId) {
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new RuntimeException("Client not found with id: " + clientId));

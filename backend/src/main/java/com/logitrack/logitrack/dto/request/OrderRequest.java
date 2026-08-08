@@ -11,6 +11,6 @@ import java.time.LocalDate;
 @Setter
 @Getter
 public class OrderRequest{
-@NotBlank(message = "Client id is required")
+
     private  Long clientId;
 }

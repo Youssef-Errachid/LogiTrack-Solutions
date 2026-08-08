@@ -14,4 +14,5 @@ public class OrderResponse {
     private LocalDate orderDate;
     private OrderStatus status;
     private  Long clientId;
+    private  String clientName;
 }

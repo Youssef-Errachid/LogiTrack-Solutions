@@ -1,5 +1,6 @@
 package com.logitrack.logitrack.controller;
 
+import com.logitrack.logitrack.dto.request.OrderLineRequest;
 import com.logitrack.logitrack.dto.request.OrderRequest;
 import com.logitrack.logitrack.dto.response.OrderResponse;
 import com.logitrack.logitrack.mapper.OrderMapper;
@@ -27,10 +28,18 @@ public class OrderController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
+    @PostMapping("/{orderId}/lines")
+    public ResponseEntity<Void> addOrderLine(
+            @PathVariable Long orderId,
+            @Valid @RequestBody OrderLineRequest request) {
+        orderService.addOrderLine(orderId, request.getProductId(), request.getQuantity());
+        return ResponseEntity.ok().build();
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PostMapping
     public ResponseEntity<OrderResponse> createOrder(@Valid @RequestBody OrderRequest request) {
-        Order order = orderMapper.toEntity(request);
-        Order savedOrder = orderService.createOrder(order.getClient().getId());
+        Order savedOrder = orderService.createOrder(request.getClientId());
         return ResponseEntity.ok(orderMapper.toResponse(savedOrder));
     }
 
