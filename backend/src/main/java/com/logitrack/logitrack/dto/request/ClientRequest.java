@@ -21,5 +21,5 @@ public class ClientRequest{
     private String phone;
 
     @NotBlank(message= "city is required")
-    private String sity;
+    private String city;
 }
