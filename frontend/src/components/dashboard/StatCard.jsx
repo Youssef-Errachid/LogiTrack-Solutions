@@ -7,7 +7,6 @@ export default function StatCard({ title, value, icon, color }) {
       sx={{
         width: "100%",
         borderRadius: 3,
-        backgroundColor: `${color}15`,
         border: "1px solid",
         borderColor: "divider",
         transition: "all 0.2s ease",
@@ -17,7 +16,7 @@ export default function StatCard({ title, value, icon, color }) {
         },
       }}
     >
-      <CardContent sx={{ width: "100%" }}>
+      <CardContent>
         <Box
           display="flex"
           justifyContent="space-between"

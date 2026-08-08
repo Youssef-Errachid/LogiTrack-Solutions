@@ -9,6 +9,8 @@ import AccessDenied from "../pages/AccessDenied";
 import NotFound from "../pages/NotFound";
 import Products from "../pages/Products";
 import Applayout from "../components/layout/Applayout.jsx";
+import ProtectedRoute from "./ProtectedRoute";
+import RoleGuard from "./RoleGuard";
 
 export default function AppRouter() {
   return (
@@ -18,11 +20,34 @@ export default function AppRouter() {
         <Route path="/register" element={<Register />} />
         <Route path="/accessDenied" element={<AccessDenied />} />
 
-        <Route element={<Applayout />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/clients" element={<Clients />} />
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/products" element={<Products />} />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<Applayout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+
+            <Route
+              element={
+                <RoleGuard allowedRoles={["ADMIN", "MANAGER", "AGENT"]} />
+              }
+            >
+              <Route path="/clients" element={<Clients />} />
+            </Route>
+
+            <Route
+              element={
+                <RoleGuard allowedRoles={["ADMIN", "MANAGER", "AGENT"]} />
+              }
+            >
+              <Route path="/orders" element={<Orders />} />
+            </Route>
+
+            <Route
+              element={
+                <RoleGuard allowedRoles={["ADMIN", "MANAGER", "AGENT"]} />
+              }
+            >
+              <Route path="/products" element={<Products />} />
+            </Route>
+          </Route>
         </Route>
 
         <Route path="*" element={<NotFound />} />
