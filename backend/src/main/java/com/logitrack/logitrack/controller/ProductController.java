@@ -84,4 +84,9 @@ public class ProductController {
         return ResponseEntity.ok(productMapper.toResponse(updatedProduct));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")
+    @GetMapping("/count")
+    public ResponseEntity<Long> getProductCount() {
+        return ResponseEntity.ok(productService.getProductCount());
+    }
 }

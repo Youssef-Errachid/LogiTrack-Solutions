@@ -42,4 +42,8 @@ public class ClientService {
         clientMapper.updateClientFromRequest(request,client);
         return clientRepository.save(client);
     }
+
+    public Long getClientCount() {
+        return clientRepository.count();
+    }
 }

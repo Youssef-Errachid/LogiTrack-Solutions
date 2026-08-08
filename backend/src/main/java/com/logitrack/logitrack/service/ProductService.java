@@ -55,4 +55,8 @@ public class ProductService {
         productMapper.updateProductFromRequest(request,product);
         return productRepository.save(product);
     }
+
+    public Long getProductCount() {
+        return productRepository.count();
+    }
 }

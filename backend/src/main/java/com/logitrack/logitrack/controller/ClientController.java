@@ -74,4 +74,9 @@ public class ClientController {
         Client updatedClient = clientService.updateClient(id,request);
         return ResponseEntity.ok(clientMapper.toReponse(updatedClient));
     }
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")
+    @GetMapping("/count")
+    public ResponseEntity<Long> getClientCount() {
+        return ResponseEntity.ok(clientService.getClientCount());
+    }
 }
