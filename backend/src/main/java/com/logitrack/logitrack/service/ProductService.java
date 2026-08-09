@@ -65,4 +65,8 @@ public class ProductService {
         List<Product> results = productRepository.findTopSellingProducts(PageRequest.of(0, 1));
         return results.isEmpty() ? null : results.get(0);
     }
+
+    public Page<Product> searchProducts(String keyword, Pageable pageable) {
+        return productRepository.searchProducts(keyword, pageable);
+    }
 }
