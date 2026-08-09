@@ -38,3 +38,8 @@ export const getUserRole = () => {
     return null;
   }
 };
+
+export const hasRole = (...roles) => {
+  const userRole = getUserRole();
+  return roles.includes(userRole);
+};
