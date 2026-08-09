@@ -9,20 +9,39 @@ import {
 } from "@mui/material";
 import { TruckElectric } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { login } from "../api/authService.js";
-import { Link } from "react-router-dom";
+
+const loginSchema = yup.object({
+  email: yup
+    .string()
+    .required("Email is required")
+    .email("Enter a valid email"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(6, "Password must be at least 6 chars"),
+});
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLoginSubmit = async () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(loginSchema),
+  });
+
+  const onSubmit = async (formData) => {
     try {
       setLoading(true);
-      const data = await login({ email, password });
+      const data = await login(formData);
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data));
 
@@ -33,6 +52,7 @@ export default function Login() {
       setLoading(false);
     }
   };
+
   return (
     <Container
       maxWidth="sm"
@@ -63,51 +83,57 @@ export default function Login() {
         <Typography variant="h3" align="center" gutterBottom sx={{ mb: 3 }}>
           Login
         </Typography>
-        <Stack spacing={3}>
-          <TextField
-            label="Email"
-            type="email"
-            fullWidth
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            label="Password"
-            type="password"
-            fullWidth
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <Button
-              variant="contained"
-              size="large"
-              onClick={handleLoginSubmit}
+
+        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+          <Stack spacing={3}>
+            <TextField
+              label="Email"
+              type="email"
+              fullWidth
+              {...register("email")}
+              error={Boolean(errors.email)}
+              helperText={errors.email?.message}
+            />
+            <TextField
+              label="Password"
+              type="password"
+              fullWidth
+              {...register("password")}
+              error={Boolean(errors.password)}
+              helperText={errors.password?.message}
+            />
+            <Box
               sx={{
-                backgroundColor: "#0226d9",
-                width: "80%",
-                borderRadius: 5,
-                "&:hover": {
-                  backgroundColor: "#001fb3",
-                },
+                display: "flex",
+                justifyContent: "center",
               }}
             >
-              {loading ? "Logging in..." : "Login"}
-            </Button>
-          </Box>
+              <Button
+                type="submit"
+                variant="contained"
+                size="large"
+                disabled={loading}
+                sx={{
+                  backgroundColor: "#0226d9",
+                  width: "80%",
+                  borderRadius: 5,
+                  "&:hover": {
+                    backgroundColor: "#001fb3",
+                  },
+                }}
+              >
+                {loading ? "Logging in..." : "Login"}
+              </Button>
+            </Box>
 
-          <Typography>
-            <Link to={"/"}>Forgot Password?</Link>
-          </Typography>
-          <Typography>
-            Don't have an account? <Link to={"/register"}>Sign Up Here.</Link>
-          </Typography>
-        </Stack>
+            <Typography>
+              <Link to={"/"}>Forgot Password?</Link>
+            </Typography>
+            <Typography>
+              Don't have an account? <Link to={"/register"}>Sign Up Here.</Link>
+            </Typography>
+          </Stack>
+        </Box>
       </Paper>
     </Container>
   );

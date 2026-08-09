@@ -19,7 +19,7 @@
     "lucide-react": "^1.29.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-hook-form": "^7.84.0",
+    "react-hook-form": "^7.85.0",
     "react-router-dom": "^7.18.2",
     "react-toastify": "^11.1.0",
     "yup": "^1.7.1"
