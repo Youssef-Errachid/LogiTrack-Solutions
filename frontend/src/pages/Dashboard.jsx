@@ -16,7 +16,6 @@ export default function Dashboard() {
     const fetchDashboard = async () => {
       try {
         const data = await getDashboard();
-        console.log(data);
         setDashboard(data);
       } catch (error) {
         console.error(error);
@@ -57,7 +56,7 @@ export default function Dashboard() {
 
   return (
     <Box p={{ xs: 2, md: 4 }} sx={{ minHeight: "100vh" }}>
-      <Typography variant="h5" fontWeight="bold" mb={3}>
+      <Typography variant="h5" fontWeight="bold" mb={2}>
         Dashboard
       </Typography>
 
@@ -67,8 +66,8 @@ export default function Dashboard() {
         sx={{
           display: "flex",
           flexDirection: { xs: "column", md: "row" },
-          gap: 3,
-          mt: 4,
+          gap: 2,
+          mt: 2,
         }}
       >
         <Box sx={{ flex: 2 }}>

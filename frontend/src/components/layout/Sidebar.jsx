@@ -1,64 +1,76 @@
-import {NavLink} from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 import "../../styles/Sidebar.css";
-import {LayoutDashboard,Users,Package,ShoppingBasket,Info,User,Settings}from 'lucide-react';
+import {
+  LayoutDashboard,
+  Users,
+  Package,
+  ShoppingBasket,
+  Info,
+  User,
+  Settings,
+  UserStar,
+} from "lucide-react";
 
 const menuItems = [
-    {
-        path:"/dashboard",
-        icon:<LayoutDashboard size={25} />,
-        label:"Dashboard"
-    },
-    {
-        path:"/clients",
-        icon:<Users size={25} />,
-        label:"Clients"
-    },
-    {
-        path:"/products",
-        icon:<ShoppingBasket size={25} />,
-        label:"Products"
-    },
-    {
-        path:"/orders",
-        icon:<Package size={25} />,
-        label:"Orders"
-    },
-    {
-        path:"/about",
-        icon:<Info  size={25}/>,
-        label:"About"
-    },
-    {
-        path:"/settings",
-        icon:<Settings  size={25}/>,
-        label:"Settings"
-    },
+  {
+    path: "/dashboard",
+    icon: <LayoutDashboard size={25} />,
+    label: "Dashboard",
+  },
+  {
+    path: "/clients",
+    icon: <Users size={25} />,
+    label: "Clients",
+  },
+  {
+    path: "/products",
+    icon: <ShoppingBasket size={25} />,
+    label: "Products",
+  },
+  {
+    path: "/orders",
+    icon: <Package size={25} />,
+    label: "Orders",
+  },
+  {
+    path: "/users",
+    icon: <Users size={25} />,
+    label: "Users",
+  },
+  {
+    path: "/profile",
+    icon: <UserStar size={25} />,
+    label: "Profile",
+  },
 ];
 
 export default function Sidebar() {
-    return (
-        <aside className="sidebar">
-            <div className="sidebar-menu">
-                {menuItems.map((item)=>(
-                    <NavLink
-                        key = {item.path}
-                        to={item.path}
-                        className={({isActive})=>isActive ? "nav-link active" : "nav-link"}>
-                        {item.icon}
-                        <span>{item.label}</span>
-                    </NavLink>
-                ))}
-            </div>
+  return (
+    <aside className="sidebar">
+      <div className="sidebar-menu">
+        {menuItems.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            className={({ isActive }) =>
+              isActive ? "nav-link active" : "nav-link"
+            }
+          >
+            {item.icon}
+            <span>{item.label}</span>
+          </NavLink>
+        ))}
+      </div>
 
-            <div className="user-panel">
-                <div className="user-icon">
-                    <User size={32} />
-                </div>
-                <div>
-                    <p className="user-name">Youssef errachid</p>
-                    <p className="user-role">ADMIN</p>
-                </div>
-            </div>
-        </aside>
-    )
+      <div className="user-panel">
+        <div className="user-icon">
+          <User size={32} />
+        </div>
+        <div>
+          <p className="user-name">Youssef errachid</p>
+          <p className="user-role">ADMIN</p>
+        </div>
+      </div>
+    </aside>
+  );
 }

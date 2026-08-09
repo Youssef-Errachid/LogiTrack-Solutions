@@ -125,7 +125,7 @@ export default function Clients() {
         justifyContent="space-between"
         alignItems={{ xs: "stretch", md: "center" }}
         gap={10}
-        sx={{ mb: "30px" }}
+        sx={{ mb: "30px", mt: "30px" }}
       >
         <Typography variant="h5" fontWeight="bold">
           Clients
@@ -165,7 +165,7 @@ export default function Clients() {
             startIcon={<Plus size={18} />}
             onClick={handleAddClick}
             sx={{
-              ml: { xs: 0, sm: "350px" },
+              ml: { xs: 0, sm: "300px" },
               mt: { xs: "16px", sm: 0 },
 
               borderRadius: 2,
