@@ -5,43 +5,21 @@ import {
   Users,
   Package,
   ShoppingBasket,
-  Info,
   User,
-  Settings,
   UserStar,
 } from "lucide-react";
 
 const menuItems = [
   {
     path: "/dashboard",
-    icon: <LayoutDashboard size={25} />,
+    icon: <LayoutDashboard size={20} />,
     label: "Dashboard",
   },
-  {
-    path: "/clients",
-    icon: <Users size={25} />,
-    label: "Clients",
-  },
-  {
-    path: "/products",
-    icon: <ShoppingBasket size={25} />,
-    label: "Products",
-  },
-  {
-    path: "/orders",
-    icon: <Package size={25} />,
-    label: "Orders",
-  },
-  {
-    path: "/users",
-    icon: <Users size={25} />,
-    label: "Users",
-  },
-  {
-    path: "/profile",
-    icon: <UserStar size={25} />,
-    label: "Profile",
-  },
+  { path: "/clients", icon: <Users size={20} />, label: "Clients" },
+  { path: "/products", icon: <ShoppingBasket size={20} />, label: "Products" },
+  { path: "/orders", icon: <Package size={20} />, label: "Orders" },
+  { path: "/users", icon: <Users size={20} />, label: "Users" },
+  { path: "/profile", icon: <UserStar size={20} />, label: "Profile" },
 ];
 
 export default function Sidebar() {
@@ -56,17 +34,17 @@ export default function Sidebar() {
               isActive ? "nav-link active" : "nav-link"
             }
           >
-            {item.icon}
-            <span>{item.label}</span>
+            <span className="nav-icon">{item.icon}</span>
+            <span className="nav-label">{item.label}</span>
           </NavLink>
         ))}
       </div>
 
       <div className="user-panel">
         <div className="user-icon">
-          <User size={32} />
+          <User size={22} />
         </div>
-        <div>
+        <div className="user-info">
           <p className="user-name">Youssef errachid</p>
           <p className="user-role">ADMIN</p>
         </div>
