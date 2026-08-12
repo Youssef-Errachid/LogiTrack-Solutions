@@ -38,9 +38,9 @@ public class ProductController {
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER','AGENT')")
     @GetMapping
     public ResponseEntity<Page<ProductResponse>> getAllProducts(Pageable pageable) {
-       Page<ProductResponse> products = productService
-               .getAllProducts(pageable)
-               .map(productMapper::toResponse);
+        Page<ProductResponse> products = productService
+                .getAllProducts(pageable)
+                .map(productMapper::toResponse);
         return ResponseEntity.ok((products));
     }
 
@@ -51,7 +51,7 @@ public class ProductController {
         return ResponseEntity.ok(productMapper.toResponse(product));
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
