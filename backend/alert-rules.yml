@@ -1,0 +1,40 @@
+groups:
+  - name: logitrack_alerts
+    rules:
+
+      - alert: LogiTrackAPIDown
+        expr: up{job="logitrack"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "LogiTrack API is down"
+          description: "LogiTrack has been unreachable for more than 1 minute"
+
+      - alert: HighHTTPErrorRate
+        expr: rate(http_server_requests_seconds_count{status=~"5.."}[5m]) > 0.1
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High HTTP error rate"
+          description: "More than 10% of requests are returning 5xx errors"
+
+      - alert: SlowResponseTime
+        expr: rate(http_server_requests_seconds_sum[5m]) / rate(http_server_requests_seconds_count[5m]) > 2
+        for: 3m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Slow response time"
+          description: "Average response time is above 2 seconds"
+
+      - alert: HighMemoryUsage
+
+        expr: jvm_memory_used_bytes / jvm_memory_max_bytes > 0.85
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High JVM memory usage"
+          description: "JVM memory usage is above 85%"
