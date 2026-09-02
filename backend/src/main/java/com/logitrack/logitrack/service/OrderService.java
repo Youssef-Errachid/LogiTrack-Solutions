@@ -1,5 +1,6 @@
 package com.logitrack.logitrack.service;
 
+import com.logitrack.logitrack.client.NotificationClient;
 import com.logitrack.logitrack.model.*;
 import com.logitrack.logitrack.repository.*;
 import org.springframework.data.domain.Page;
@@ -16,15 +17,18 @@ public class OrderService {
     private final ClientRepository clientRepository;
     private final ProductRepository productRepository;
     private final OrderLineRepository orderLineRepository;
+    private final NotificationClient notificationClient;
 
     public OrderService(OrderRepository orderRepository,
                         ClientRepository clientRepository,
                         ProductRepository productRepository,
-                        OrderLineRepository orderLineRepository) {
+                        OrderLineRepository orderLineRepository,
+                        NotificationClient notificationClient) {
         this.orderRepository = orderRepository;
         this.clientRepository = clientRepository;
         this.productRepository = productRepository;
         this.orderLineRepository = orderLineRepository;
+        this.notificationClient = notificationClient;
     }
 
     public OrderLine addOrderLine(Long orderId, Long productId, Integer quantity) {
