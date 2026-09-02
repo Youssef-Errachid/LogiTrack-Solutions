@@ -1,8 +1,4 @@
-version: '3.8'
-
 services:
-
-
   logitrack:
     build: .
     container_name: logitrack
@@ -12,11 +8,14 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/logitrack_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_FLYWAY_ENABLED=false
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
+    restart: on-failure
     networks:
       - logitrack-net
-
 
   mysql:
     image: mysql:8.0
@@ -25,12 +24,26 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: logitrack_db
     ports:
-      - "3306:3306"
+      - "3307:3306"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-uroot",
+          "-proot"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
       - logitrack-net
-
 
   prometheus:
     image: prom/prometheus:latest
@@ -38,11 +51,10 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./alert-rules.yml:/etc/prometheus/alert-rules.yml
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./alert-rules.yml:/etc/prometheus/alert-rules.yml:ro
     networks:
       - logitrack-net
-
 
   grafana:
     image: grafana/grafana:latest
@@ -59,19 +71,37 @@ services:
     networks:
       - logitrack-net
 
-
   loki:
     image: grafana/loki:latest
     container_name: loki
     ports:
       - "3100:3100"
     volumes:
-      - ./loki-config.yml:/etc/loki/local-config.yaml
+      - ./loki-config.yml:/etc/loki/local-config.yaml:ro
       - loki-data:/loki
-    command: -config.file=/etc/loki/local-config.yaml
+    command:
+      - "-config.file=/etc/loki/local-config.yaml"
+    restart: on-failure
     networks:
       - logitrack-net
 
+  alloy:
+    image: grafana/alloy:latest
+    container_name: alloy
+    ports:
+      - "12345:12345"
+    volumes:
+      - ./config.alloy:/etc/alloy/config.alloy:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    command:
+      - run
+      - /etc/alloy/config.alloy
+      - --server.http.listen-addr=0.0.0.0:12345
+    depends_on:
+      - loki
+    restart: on-failure
+    networks:
+      - logitrack-net
 
   alertmanager:
     image: prom/alertmanager:latest
@@ -79,7 +109,7 @@ services:
     ports:
       - "9093:9093"
     volumes:
-      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
     networks:
       - logitrack-net
 
