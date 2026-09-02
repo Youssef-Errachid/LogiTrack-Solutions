@@ -1,6 +1,6 @@
 package com.logitrack.logitrack.dto.response;
 
-import com.logitrack.logitrack.model.OrderStatus;
+import com.logitrack.logitrack.enums.OrderStatus;
 import lombok.*;
 import java.time.LocalDate;
 

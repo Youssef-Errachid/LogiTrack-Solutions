@@ -3,7 +3,7 @@ package com.logitrack.logitrack.controller;
 import com.logitrack.logitrack.dto.request.ProductRequest;
 import com.logitrack.logitrack.dto.response.ProductResponse;
 import com.logitrack.logitrack.mapper.ProductMapper;
-import com.logitrack.logitrack.model.Product;
+import com.logitrack.logitrack.entity.Product;
 import com.logitrack.logitrack.service.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;

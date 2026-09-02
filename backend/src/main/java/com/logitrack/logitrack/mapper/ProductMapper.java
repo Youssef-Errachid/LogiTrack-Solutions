@@ -2,7 +2,7 @@ package  com.logitrack.logitrack.mapper;
 
 import com.logitrack.logitrack.dto.request.ProductRequest;
 import com.logitrack.logitrack.dto.response.ProductResponse;
-import com.logitrack.logitrack.model.Product;
+import com.logitrack.logitrack.entity.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

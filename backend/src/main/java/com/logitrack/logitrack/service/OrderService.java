@@ -1,7 +1,8 @@
 package com.logitrack.logitrack.service;
 
 import com.logitrack.logitrack.client.NotificationClient;
-import com.logitrack.logitrack.model.*;
+import com.logitrack.logitrack.entity.*;
+import com.logitrack.logitrack.enums.OrderStatus;
 import com.logitrack.logitrack.repository.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

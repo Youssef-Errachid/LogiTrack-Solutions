@@ -1,6 +1,6 @@
 package com.logitrack.logitrack.repository;
 
-import com.logitrack.logitrack.model.Client;
+import com.logitrack.logitrack.entity.Client;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

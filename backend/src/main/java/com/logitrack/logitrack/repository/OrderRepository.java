@@ -1,8 +1,8 @@
 package com.logitrack.logitrack.repository;
 
 
-import com.logitrack.logitrack.model.Order;
-import com.logitrack.logitrack.model.OrderStatus;
+import com.logitrack.logitrack.entity.Order;
+import com.logitrack.logitrack.enums.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

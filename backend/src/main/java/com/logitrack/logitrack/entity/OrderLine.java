@@ -1,4 +1,4 @@
-package com.logitrack.logitrack.model;
+package com.logitrack.logitrack.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;

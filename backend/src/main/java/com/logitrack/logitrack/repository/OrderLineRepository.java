@@ -1,8 +1,7 @@
 package com.logitrack.logitrack.repository;
 
-import com.logitrack.logitrack.model.OrderLine;
+import com.logitrack.logitrack.entity.OrderLine;
 
-import com.logitrack.logitrack.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

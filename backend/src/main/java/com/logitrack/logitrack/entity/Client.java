@@ -1,4 +1,4 @@
-package com.logitrack.logitrack.model;
+package com.logitrack.logitrack.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

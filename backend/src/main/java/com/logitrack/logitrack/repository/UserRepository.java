@@ -1,6 +1,6 @@
 package com.logitrack.logitrack.repository;
 
-import com.logitrack.logitrack.model.User;
+import com.logitrack.logitrack.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

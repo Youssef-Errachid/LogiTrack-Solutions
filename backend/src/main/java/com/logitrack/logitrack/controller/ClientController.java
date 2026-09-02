@@ -3,10 +3,9 @@ package com.logitrack.logitrack.controller;
 import com.logitrack.logitrack.dto.request.ClientRequest;
 import com.logitrack.logitrack.dto.response.ClientResponse;
 import com.logitrack.logitrack.mapper.ClientMapper;
-import com.logitrack.logitrack.model.Client;
+import com.logitrack.logitrack.entity.Client;
 import com.logitrack.logitrack.service.ClientService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/clients")

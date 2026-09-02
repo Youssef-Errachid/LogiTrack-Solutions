@@ -2,7 +2,7 @@ package com.logitrack.logitrack.service;
 
 import com.logitrack.logitrack.dto.request.ProductRequest;
 import com.logitrack.logitrack.mapper.ProductMapper;
-import com.logitrack.logitrack.model.Product;
+import com.logitrack.logitrack.entity.Product;
 import com.logitrack.logitrack.repository.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

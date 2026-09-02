@@ -1,5 +1,6 @@
-package com.logitrack.logitrack.model;
+package com.logitrack.logitrack.entity;
 
+import com.logitrack.logitrack.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

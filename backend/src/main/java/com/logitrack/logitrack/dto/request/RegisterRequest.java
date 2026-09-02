@@ -1,6 +1,6 @@
 package com.logitrack.logitrack.dto.request;
 
-import com.logitrack.logitrack.model.Role;
+import com.logitrack.logitrack.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

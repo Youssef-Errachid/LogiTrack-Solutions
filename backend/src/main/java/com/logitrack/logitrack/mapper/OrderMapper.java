@@ -1,6 +1,6 @@
 package  com.logitrack.logitrack.mapper;
 
-import com.logitrack.logitrack.model.Order;
+import com.logitrack.logitrack.entity.Order;
 import com.logitrack.logitrack.dto.request.OrderRequest;
 import com.logitrack.logitrack.dto.response.OrderResponse;
 import org.mapstruct.Mapper;

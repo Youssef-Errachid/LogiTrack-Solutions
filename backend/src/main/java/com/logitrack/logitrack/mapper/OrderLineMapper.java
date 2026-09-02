@@ -1,7 +1,7 @@
 package  com.logitrack.logitrack.mapper;
 
 
-import com.logitrack.logitrack.model.OrderLine;
+import com.logitrack.logitrack.entity.OrderLine;
 import com.logitrack.logitrack.dto.request.OrderLineRequest;
 import com.logitrack.logitrack.dto.response.OrderLineResponse;
 

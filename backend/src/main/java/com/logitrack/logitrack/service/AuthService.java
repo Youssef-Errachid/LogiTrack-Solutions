@@ -3,7 +3,7 @@ package com.logitrack.logitrack.service;
 import com.logitrack.logitrack.dto.request.LoginRequest;
 import com.logitrack.logitrack.dto.request.RegisterRequest;
 import com.logitrack.logitrack.dto.response.AuthResponse;
-import com.logitrack.logitrack.model.User;
+import com.logitrack.logitrack.entity.User;
 import com.logitrack.logitrack.repository.UserRepository;
 import com.logitrack.logitrack.security.jwt.JwtService;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.logitrack.logitrack.dto.response;
 
-import com.logitrack.logitrack.model.Role;
+import com.logitrack.logitrack.enums.Role;
 import lombok.*;
 
 @AllArgsConstructor

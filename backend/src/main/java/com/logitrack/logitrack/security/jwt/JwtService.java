@@ -1,6 +1,6 @@
 package com.logitrack.logitrack.security.jwt;
 
-import com.logitrack.logitrack.model.User;
+import com.logitrack.logitrack.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
