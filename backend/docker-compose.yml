@@ -1,18 +1,22 @@
 services:
+
   logitrack:
     build: .
     container_name: logitrack
     ports:
       - "8080:8080"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/logitrack_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_FLYWAY_ENABLED=false
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/logitrack_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_FLYWAY_ENABLED: false
+      NOTIFICATION_API_URL: http://notification-service:8081
     depends_on:
       mysql:
         condition: service_healthy
+      notification-service:
+        condition: service_started
     restart: on-failure
     networks:
       - logitrack-net
@@ -45,71 +49,49 @@ services:
     networks:
       - logitrack-net
 
-  prometheus:
-    image: prom/prometheus:latest
-    container_name: prometheus
+  notification-service:
+    build: ../../logitrack-notification-service/notification-service
+    container_name: notification-service
     ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - ./alert-rules.yml:/etc/prometheus/alert-rules.yml:ro
-    networks:
-      - logitrack-net
-
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    ports:
-      - "3000:3000"
+      - "8081:8081"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    volumes:
-      - grafana-data:/var/lib/grafana
+      SPRING_DATASOURCE_URL: jdbc:mysql://notification-mysql:3306/notification_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_FLYWAY_ENABLED: true
     depends_on:
-      - prometheus
-      - loki
-    networks:
-      - logitrack-net
-
-  loki:
-    image: grafana/loki:latest
-    container_name: loki
-    ports:
-      - "3100:3100"
-    volumes:
-      - ./loki-config.yml:/etc/loki/local-config.yaml:ro
-      - loki-data:/loki
-    command:
-      - "-config.file=/etc/loki/local-config.yaml"
+      notification-mysql:
+        condition: service_healthy
     restart: on-failure
     networks:
       - logitrack-net
 
-  alloy:
-    image: grafana/alloy:latest
-    container_name: alloy
+  notification-mysql:
+    image: mysql:8.0
+    container_name: notification-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: notification_db
     ports:
-      - "12345:12345"
+      - "3308:3306"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-uroot",
+          "-proot"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     volumes:
-      - ./config.alloy:/etc/alloy/config.alloy:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-    command:
-      - run
-      - /etc/alloy/config.alloy
-      - --server.http.listen-addr=0.0.0.0:12345
-    depends_on:
-      - loki
-    restart: on-failure
-    networks:
-      - logitrack-net
-
-  alertmanager:
-    image: prom/alertmanager:latest
-    container_name: alertmanager
-    ports:
-      - "9093:9093"
-    volumes:
-      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - notification-mysql-data:/var/lib/mysql
     networks:
       - logitrack-net
 
@@ -119,5 +101,4 @@ networks:
 
 volumes:
   mysql-data:
-  grafana-data:
-  loki-data:
+  notification-mysql-data:
