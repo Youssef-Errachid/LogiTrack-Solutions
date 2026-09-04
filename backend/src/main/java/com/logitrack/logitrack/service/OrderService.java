@@ -1,6 +1,7 @@
 package com.logitrack.logitrack.service;
 
 import com.logitrack.logitrack.client.NotificationClient;
+import com.logitrack.logitrack.dto.request.NotificationRequest;
 import com.logitrack.logitrack.entity.*;
 import com.logitrack.logitrack.enums.OrderStatus;
 import com.logitrack.logitrack.repository.*;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class OrderService {
@@ -19,6 +22,9 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final OrderLineRepository orderLineRepository;
     private final NotificationClient notificationClient;
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(OrderService.class);
 
     public OrderService(OrderRepository orderRepository,
                         ClientRepository clientRepository,
@@ -54,7 +60,15 @@ public class OrderService {
         order.setOrderDate(LocalDate.now());
         order.setStatus(OrderStatus.PENDING);
 
-        return orderRepository.save(order);
+        Order savedOrder = orderRepository.save(order);
+
+        sendNotification(
+                savedOrder,
+                "ORDER_CREATED",
+                "Order #" + savedOrder.getId() + " has been created"
+        );
+
+        return savedOrder;
     }
 
 
@@ -72,7 +86,26 @@ public class OrderService {
     public Order updateOrderStatus(Long id, OrderStatus status) {
         Order order = getOrderById(id);
         order.setStatus(status);
-        return orderRepository.save(order);
+
+        Order savedOrder = orderRepository.save(order);
+
+        if (status == OrderStatus.SHIPPED) {
+            sendNotification(
+                    savedOrder,
+                    "ORDER_SHIPPED",
+                    "Order #" + savedOrder.getId() + " has been shipped"
+            );
+        }
+
+        if (status == OrderStatus.DELIVERED) {
+            sendNotification(
+                    savedOrder,
+                    "ORDER_DELIVERED",
+                    "Order #" + savedOrder.getId() + " has been delivered"
+            );
+        }
+
+        return savedOrder;
     }
 
 
@@ -95,5 +128,24 @@ public class OrderService {
 
     public long countOrdersByStatus(OrderStatus status) {
         return orderRepository.countByStatus(status);
+    }
+
+    private void sendNotification(Order order, String kind, String message) {
+        NotificationRequest notificationRequest =
+                new NotificationRequest(
+                        message,
+                        kind,
+                        order.getId()
+                );
+
+        try {
+            notificationClient.createNotification(notificationRequest);
+        } catch (Exception e) {
+            logger.error(
+                    "Failed to send notification for order {}",
+                    order.getId(),
+                    e
+            );
+        }
     }
 }
